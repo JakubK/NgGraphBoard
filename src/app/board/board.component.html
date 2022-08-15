@@ -1,2 +1,3 @@
-<div class="board">
+<div (click)="handleClick($event)" class="board">
+    <node *ngFor="let data of boardService.items$ | async" [position]="data"></node>
 </div>
