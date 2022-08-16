@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { map, Observable, startWith } from 'rxjs';
-import { BoardService } from './board.service';
+import { BoardService } from '../../services/board.service';
 
 @Component({
   selector: 'board',

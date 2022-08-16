@@ -1,0 +1,21 @@
+.toolbar {
+    position: absolute;
+    z-index: 1;
+    width: 80px;
+    &__content {
+        margin-left: 16px;
+        background: #061A40;
+        border-radius: 11px;
+    }
+
+    &__item {
+        cursor: pointer;
+        background: #061A40;
+        border-radius: 11px;
+        width: 64px;
+        height: 64px;
+        &:hover {
+            background: #F4F5FC;
+        }
+    }
+}

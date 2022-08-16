@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, filter, scan, map, Observable, Subject, combineLatest, switchMap } from "rxjs";
-import { Position } from "./position";
+import { Position } from "../models/position";
 
 @Injectable({
     providedIn: 'root'

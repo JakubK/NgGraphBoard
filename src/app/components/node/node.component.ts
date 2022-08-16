@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Position } from '../board/position';
+import { Position } from '../../models/position';
 
 @Component({
   selector: 'node',
