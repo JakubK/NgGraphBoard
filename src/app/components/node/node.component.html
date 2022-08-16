@@ -1,3 +1,3 @@
-<div (click)="$event.stopPropagation()" class="node" [style.transform]="'translateX(' + position.x + 'px) translateY(' + position.y + 'px)'">
+<div (click)="nodeClick($event)" class="node" [style.transform]="'translateX(' + position.x + 'px) translateY(' + position.y + 'px)'">
     <div class="node__inner"></div>
 </div>
