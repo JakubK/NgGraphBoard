@@ -1,3 +1,3 @@
-<div (click)="handleClick($event)" class="board">
+<div (click)="handleClick($event)" class="board" [style.transform]="'scale(' + (zoom$ | async) + ')'">
     <node *ngFor="let data of boardService.items$ | async" [position]="data"></node>
 </div>

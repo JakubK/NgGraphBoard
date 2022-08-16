@@ -6,6 +6,14 @@
     border: 3px solid #061A40;
     border-radius: 50%;
 
+    cursor: pointer;
+    &:hover {
+        border-color: #3C91E6;
+        .node__inner {
+            background: #3C91E6;
+        }
+    }
+
     &__inner {
         box-sizing: content-box;
         position: absolute;
