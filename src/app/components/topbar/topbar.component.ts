@@ -4,8 +4,8 @@ import { BoardService } from '../../services/board.service';
 
 @Component({
   selector: 'top-bar',
-  templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.scss']
+  templateUrl: './topbar.component.html',
+  styleUrls: ['./topbar.component.scss']
 })
 export class TopBarComponent {
   zoom$: Observable<string>;
