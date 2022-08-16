@@ -6,16 +6,24 @@
         margin-left: 16px;
         background: #061A40;
         border-radius: 11px;
+        padding: 3px;
+        width: 64px;
     }
 
     &__item {
         cursor: pointer;
         background: #061A40;
         border-radius: 11px;
-        width: 64px;
         height: 64px;
-        &:hover {
+        &--active, &:hover {
             background: #F4F5FC;
+            svg, path {
+                stroke: #061A40;
+            }
         }
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
