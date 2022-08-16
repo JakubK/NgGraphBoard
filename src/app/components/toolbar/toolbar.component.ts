@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CursorMode } from 'src/app/models/cursorMode';
+import { CursorService } from 'src/app/services/cursor.service';
 
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
-  constructor() { }
+  constructor(public readonly cursorService: CursorService) { }
 
-  ngOnInit(): void {
+  switchCursor(mode: CursorMode) {
+    this.cursorService.activeCursorMode$$.next(mode);
   }
-
 }
