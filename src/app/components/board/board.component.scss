@@ -3,4 +3,15 @@
     height: 100%;
 
     transform-origin: 0% 0% 0px;
+
+    &__edge {
+        cursor: pointer;
+
+        stroke: #061A40;
+        stroke-width: 3;
+        &:hover {
+            stroke: #3C91E6;
+
+        }
+    }
 }

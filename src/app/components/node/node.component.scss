@@ -6,6 +6,10 @@
     border: 3px solid #061A40;
     border-radius: 50%;
 
+    &--isolated {
+        border: none;
+    }
+
     cursor: pointer;
     &:hover {
         border-color: #3C91E6;

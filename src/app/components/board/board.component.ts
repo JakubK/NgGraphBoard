@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { BoardService } from '../../services/board.service';
 
 @Component({

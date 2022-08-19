@@ -1,5 +1,6 @@
 <div class="node"
+    [class.node--isolated]="node.edges.length === 0"
     [style.transform]="'translateX(' + node.position.x + 'px) translateY(' + node.position.y + 'px)'"
     (click)="nodeClick($event)">
-    <div class="node__inner"></div>
+    <div class="node__inner" ></div>
 </div>
