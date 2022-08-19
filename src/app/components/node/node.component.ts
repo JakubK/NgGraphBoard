@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Node } from 'src/app/models/node';
 import { CursorService } from 'src/app/services/cursor.service';
-import { Position } from '../../models/position';
 
 @Component({
   selector: 'node',
@@ -9,7 +9,7 @@ import { Position } from '../../models/position';
 })
 export class NodeComponent implements OnInit {
   @Input()
-  position!: Position;
+  node!: Node;
 
   constructor(private readonly cursorService: CursorService) { }
 
@@ -17,7 +17,7 @@ export class NodeComponent implements OnInit {
   }
 
   nodeClick(e: MouseEvent): void {
-    this.cursorService.switchToPointer();
+    this.cursorService.clickedNodes$$.next(this.node);
     e.stopPropagation();
   }
 }

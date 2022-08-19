@@ -1,3 +1,11 @@
 <div (click)="handleClick($event)" class="board" [style.transform]="'scale(' + (zoom$ | async) + ')'">
-    <node *ngFor="let data of boardService.items$ | async" [position]="data"></node>
+    <node *ngFor="let data of boardService.nodes$ | async" [node]="data"></node>
+    <svg style="width: 100%; height: 100%;">
+        <line  *ngFor="let data of boardService.edges$ | async" 
+        [attr.x1]="data.p1.x"
+        [attr.y1]="data.p1.y"
+        [attr.x2]="data.p2.x"
+        [attr.y2]="data.p2.y" 
+        stroke="black" stroke-width="3"/>
+     </svg>
 </div>

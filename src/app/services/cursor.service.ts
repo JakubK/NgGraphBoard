@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { CursorMode } from '../models/cursorMode';
+import { Node } from '../models/node';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursorService {
   activeCursorMode$$ = new BehaviorSubject<CursorMode>(CursorMode.Pointer);
+  clickedNodes$$ = new Subject<Node>();
 
-  constructor() { }
 
   switchToPointer() {
     if(this.activeCursorMode$$.getValue() === CursorMode.AddNode)

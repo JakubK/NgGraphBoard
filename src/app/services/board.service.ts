@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, filter, scan, map, Observable, Subject, combineLatest, switchMap } from "rxjs";
+import { BehaviorSubject, filter, scan, map, Observable, Subject, combineLatest, switchMap, take, toArray, repeat } from "rxjs";
 import { CursorMode } from "../models/cursorMode";
+import { Edge } from "../models/edge";
+import { Node } from "../models/node";
 import { Position } from "../models/position";
 import { CursorService } from "./cursor.service";
 
@@ -9,7 +11,9 @@ import { CursorService } from "./cursor.service";
 })
 export class BoardService {
     clickedPosition$$ = new Subject<Position>();
-    items$ = new BehaviorSubject<Position[]>([]);
+    nodes$ = new BehaviorSubject<Node[]>([]);
+    edges$ = new BehaviorSubject<Edge[]>([]);
+
     zoom$ = new Observable<number>();
     zoomTranslation$ = new BehaviorSubject<number>(100);
 
@@ -28,9 +32,25 @@ export class BoardService {
                 }))
             )),
         ).subscribe(pos => this.addNode(pos));
+
+        cursorService.activeCursorMode$$.pipe(
+            switchMap(mode => cursorService.clickedNodes$$.pipe(
+              filter(() => mode === CursorMode.AddEdge),
+              map(node => ({...node, x: node.position.x + 24, y: node.position.y + 24})),
+              take(2),
+              toArray(),
+              repeat()
+            ))
+          )
+          .subscribe(([first, second]) => {
+            this.edges$.next([...this.edges$.value,{
+                p1: first,
+                p2: second
+            } ]);
+          });
     }
 
     private addNode(x: Position): void {
-        this.items$.next([...this.items$.value, x]);
+        this.nodes$.next([...this.nodes$.value, {position: x, edges: []}]);
     }
 }
