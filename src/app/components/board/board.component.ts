@@ -78,9 +78,6 @@ export class BoardComponent implements OnInit {
           y: (event as MouseEvent).clientY - rect.top - 24 - y,
         })),
       ))
-    ).subscribe(({x,y}) => {
-      // console.log(x + ' ' + y);
-      this.boardService.clickedPosition$$.next({x,y});
-    })
+    ).subscribe(({x,y}) => this.boardService.clickedPosition$$.next({x,y}))
   }
 }

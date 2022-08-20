@@ -4,4 +4,5 @@ export enum CursorMode {
     AddNode = 2,
     AddEdge = 3,
     Label = 4,
+    Delete = 5,
 }
