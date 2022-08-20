@@ -25,7 +25,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     const mouseMove$: Observable<MouseEvent> = fromEvent(this.host.nativeElement, 'mousemove');
-    const mouseUp$: Observable<MouseEvent> = fromEvent(this.host.nativeElement, 'mouseup');
+    const mouseUp$ = fromEvent(this.host.nativeElement, 'mouseup');
     const mouseDown$ = fromEvent(this.host.nativeElement, 'mousedown');
 
     const move$ = (start: MouseEvent) => mouseMove$.pipe(
@@ -43,7 +43,7 @@ export class BoardComponent implements OnInit {
         map(([first, second]) => ({
           left: first.left - second.left,
           top: first.top - second.top,
-        }))
+        })),
       )),
     );
 
