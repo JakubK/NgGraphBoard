@@ -1,5 +1,8 @@
 .toolbar {
     position: absolute;
+    top: calc(1em + 64px + 2em);
+    left: 1em;
+
     z-index: 1;
     width: 80px;
     &__content {
