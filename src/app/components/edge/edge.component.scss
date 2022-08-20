@@ -1,9 +1,8 @@
 .edge {
     cursor: pointer;
-    stroke: #061A40;
-    stroke-width: 3;
     &:hover {
-        stroke: #3C91E6;
-
+        .edge__inner {
+            stroke: #3C91E6;
+        }
     }
 }

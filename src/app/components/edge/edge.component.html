@@ -1,8 +1,18 @@
-<svg:line class="edge" 
-stroke-width="3"
-stroke="black"
-[attr.x1]="data.p1.x"
-[attr.y1]="data.p1.y"
-[attr.x2]="data.p2.x"
-[attr.y2]="data.p2.y">
-</svg:line>
+<svg:g class="edge">
+    <svg:line class="edge__outer" 
+    stroke-width="9"
+    stroke="#F4F5FC"
+    [attr.x1]="data.p1.x"
+    [attr.y1]="data.p1.y"
+    [attr.x2]="data.p2.x"
+    [attr.y2]="data.p2.y">
+    </svg:line>
+    <svg:line class="edge__inner" 
+    stroke-width="3"
+    stroke="#061A40"
+    [attr.x1]="data.p1.x"
+    [attr.y1]="data.p1.y"
+    [attr.x2]="data.p2.x"
+    [attr.y2]="data.p2.y">
+    </svg:line>
+</svg:g>

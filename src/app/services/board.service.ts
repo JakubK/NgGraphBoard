@@ -30,11 +30,9 @@ export class BoardService {
 
         this.zoom$.pipe(
             switchMap(zoom => scroll$.pipe(
-                filter(delta => (delta > 0 && zoom < 200) || (delta < 0 && zoom > 100)),
+                filter(delta => (delta > 0 && zoom < 200) || (delta < 0 && zoom > 100))
             ))
-        ).subscribe(delta => {
-            this.zoomTranslation$.next(delta);
-        })
+        ).subscribe(delta => this.zoomTranslation$.next(delta))
         
         combineLatest([this.zoom$, cursorService.activeCursorMode$$]).pipe(
             switchMap(([zoom, mode]) => this.clickedPosition$$.pipe(
