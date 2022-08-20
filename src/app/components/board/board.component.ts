@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { animationFrameScheduler,filter, fromEvent, scan, map, Observable, subscribeOn, switchMap, takeUntil, pairwise, combineLatest, startWith, mergeMap, exhaustMap, shareReplay, distinctUntilChanged, merge, withLatestFrom } from 'rxjs';
+import { animationFrameScheduler, filter, fromEvent, scan, map, Observable, subscribeOn, switchMap, takeUntil, pairwise, combineLatest, startWith, shareReplay, withLatestFrom } from 'rxjs';
 import { CursorMode } from 'src/app/models/cursorMode';
 import { CursorService } from 'src/app/services/cursor.service';
 import { BoardService } from '../../services/board.service';

@@ -82,8 +82,8 @@ export class BoardService {
               })),
               map(({edges, nodeData}) => ({
                 restEdges: edges.filter(x => 
-                    !(x.p1.x === nodeData.toDelete.position.x && x.p1.y === nodeData.toDelete.position.y 
-                    || x.p2.x === nodeData.toDelete.position.x && x.p2.y === nodeData.toDelete.position.y)
+                    !(x.p1.x === nodeData.toDelete.position.x + 24 && x.p1.y === nodeData.toDelete.position.y + 24 
+                    || x.p2.x === nodeData.toDelete.position.x + 24 && x.p2.y === nodeData.toDelete.position.y + 24)
                 ),
                 nodeData
               }))
@@ -91,7 +91,6 @@ export class BoardService {
                 this.nodes$.next(x.nodeData.rest);
                 this.edges$.next(x.restEdges);
             });
-
 
             cursorService.activeCursorMode$$.pipe(
                 switchMap(mode => this.clickedEdges$$.pipe(
@@ -106,12 +105,10 @@ export class BoardService {
                         !(edge.p1.x === toDelete.p1.x && edge.p1.y === toDelete.p1.y && 
                         edge.p2.x === toDelete.p2.x && edge.p2.y === toDelete.p2.y)   
                     ),
-                }))))).subscribe(({rest}) => {
-                    this.edges$.next(rest);
-                });
+                }))))).subscribe(({rest}) => this.edges$.next(rest));
     }
 
     private addNode(x: Position): void {
-        this.nodes$.next([...this.nodes$.value, {position: x, edges: []}]);
+        this.nodes$.next([...this.nodes$.value, {position: x}]);
     }
 }

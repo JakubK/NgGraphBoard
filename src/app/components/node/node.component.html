@@ -1,4 +1,4 @@
-<svg:g class="node" [class.node--isolated]="data.edges.length === 0" 
+<svg:g class="node node--isolated"
     (click)="nodeClick($event)" [style.transform]="'translateX(' + data.position.x + 'px) translateY(' + data.position.y + 'px)'">
     <circle class="node__outer" cx="24" cy="24" r="22.5" stroke="#061A40" stroke-width="3"/>
     <circle class="node__inner" cx="24" cy="24" r="16.5" fill="#061A40" stroke="#F4F5FC" stroke-width="9"/>
