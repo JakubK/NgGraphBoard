@@ -1,4 +1,4 @@
-<div (click)="handleClick($event)" class="board" [style.transform]="'scale(' + (zoom$ | async) + ')'">
+<div class="board" [style.transform]="'scale(' + (zoom$ | async) + ')'">
     <svg style="width: 100%; height: 100%;">
         <g [style.transform]="'translateX('+ (translationX$ | async) +'px) translateY(' + (translationY$ | async) + 'px)'">
             <g edge *ngFor="let data of boardService.edges$ | async" [data]="data"></g>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { animationFrameScheduler,filter, fromEvent, scan, map, Observable, subscribeOn, switchMap, takeUntil, pairwise } from 'rxjs';
+import { animationFrameScheduler,filter, fromEvent, scan, map, Observable, subscribeOn, switchMap, takeUntil, pairwise, combineLatest, startWith, mergeMap, exhaustMap, shareReplay, distinctUntilChanged, merge, withLatestFrom } from 'rxjs';
 import { CursorMode } from 'src/app/models/cursorMode';
 import { CursorService } from 'src/app/services/cursor.service';
 import { BoardService } from '../../services/board.service';
@@ -18,9 +18,9 @@ export class BoardComponent implements OnInit {
   constructor(public readonly boardService: BoardService,
      private readonly cursorService: CursorService,
      private readonly host: ElementRef) {
-    this.zoom$ = boardService.zoom$.pipe(
-      map(zoom => zoom / 100)
-    )
+      this.zoom$ = boardService.zoom$.pipe(
+        map(zoom => zoom / 100)
+      )
   }
 
   ngOnInit() {
@@ -49,20 +49,38 @@ export class BoardComponent implements OnInit {
 
     this.translationX$ = drag$.pipe(
       map((translation:{left: number; top: number;}) => translation.left),
-      scan((acc,curr) => acc - curr, 0)
+      scan((acc,curr) => acc - curr, 0),
+      startWith(0),
     )
 
     this.translationY$ = drag$.pipe(
       map((translation:{left: number; top: number;}) => translation.top),
-      scan((acc,curr) => acc - curr, 0)
+      scan((acc,curr) => acc - curr, 0),
+      startWith(0),
     )
-  }
 
-  handleClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    const x = event.clientX - rect.left - 24;
-    const y = event.clientY - rect.top - 24;
-    this.boardService.clickedPosition$$.next({x, y});
+    const translation$ = combineLatest([this.translationX$, this.translationY$]).pipe(
+      shareReplay(1)
+    );
+
+    fromEvent(this.host.nativeElement, 'click').pipe(
+      switchMap((event) => this.cursorService.activeCursorMode$$.pipe(
+        filter(mode => mode === CursorMode.AddNode),
+        withLatestFrom(translation$),
+        map(([_,translation]) => [...translation]),
+        map(([x,y]) => ({
+          x,
+          y,
+          rect: ((event as Event).target as HTMLElement).getBoundingClientRect()
+        })),      
+        map(({x,y,rect}) => ({
+          x: (event as MouseEvent).clientX - rect.left - 24 - x,
+          y: (event as MouseEvent).clientY - rect.top - 24 - y,
+        })),
+      ))
+    ).subscribe(({x,y}) => {
+      // console.log(x + ' ' + y);
+      this.boardService.clickedPosition$$.next({x,y});
+    })
   }
 }
