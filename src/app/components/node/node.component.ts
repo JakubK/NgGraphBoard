@@ -3,13 +3,13 @@ import { Node } from 'src/app/models/node';
 import { CursorService } from 'src/app/services/cursor.service';
 
 @Component({
-  selector: 'node',
+  selector: '[node]',
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss']
 })
 export class NodeComponent implements OnInit {
   @Input()
-  node!: Node;
+  data!: Node;
 
   constructor(private readonly cursorService: CursorService) { }
 
@@ -17,7 +17,7 @@ export class NodeComponent implements OnInit {
   }
 
   nodeClick(e: MouseEvent): void {
-    this.cursorService.clickedNodes$$.next(this.node);
+    this.cursorService.clickedNodes$$.next(this.data);
     e.stopPropagation();
   }
 }

@@ -7,6 +7,7 @@ import { TopBarComponent } from './components/topbar/topbar.component';
 import { BoardComponent } from './components/board/board.component';
 import { NodeComponent } from './components/node/node.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { EdgeComponent } from './components/edge/edge.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     TopBarComponent,
     BoardComponent,
     NodeComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    EdgeComponent
   ],
   imports: [
     BrowserModule,
