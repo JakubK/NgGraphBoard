@@ -15,4 +15,7 @@
     [attr.x2]="data.p2.x"
     [attr.y2]="data.p2.y">
     </svg:line>
+    <svg:text text-anchor="middle" class="edge__text" [attr.x]="getTextPosition().x" [attr.y]="getTextPosition().y">
+        {{ data.label }}
+    </svg:text>
 </svg:g>
