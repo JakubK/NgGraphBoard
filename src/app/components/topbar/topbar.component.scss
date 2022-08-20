@@ -32,14 +32,23 @@
 }
 
 .zoom {
+    height: 64px;
     display: flex;
     align-items: center;
     > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
         font-family: 'Inter', sans-serif;
         font-weight: 600;
         font-size: 16px;
 
         padding: 0 1em;
         cursor: pointer;
+    }
+
+    &__control {
+        width: 64px;
     }
 }

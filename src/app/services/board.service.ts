@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, filter, scan, map, Observable, Subject, combineLatest, switchMap, take, toArray, repeat } from "rxjs";
+import { BehaviorSubject, filter, scan, map, Observable, Subject, combineLatest, switchMap, take, toArray, repeat, fromEvent, throttle, takeUntil, takeWhile } from "rxjs";
 import { CursorMode } from "../models/cursorMode";
 import { Edge } from "../models/edge";
 import { Node } from "../models/node";
@@ -22,7 +22,20 @@ export class BoardService {
             scan((acc, curr) => acc + curr),
             filter(zoom => zoom <= 200 && zoom >= 100),
         )
-            
+
+        const scroll$ = fromEvent(window, 'wheel').pipe(
+            map(e => (e as WheelEvent).deltaY),
+            map(delta => -delta / Math.abs(delta)),
+        );
+
+        this.zoom$.pipe(
+            switchMap(zoom => scroll$.pipe(
+                filter(delta =>  (delta > 0 && zoom < 200) || (delta < 0 && zoom > 100)),
+            ))
+        ).subscribe(delta => {
+            this.zoomTranslation$.next(delta);
+        })
+        
         combineLatest([this.zoom$, cursorService.activeCursorMode$$]).pipe(
             switchMap(([zoom, mode]) => this.clickedPosition$$.pipe(
                 filter(() => mode === CursorMode.AddNode),
