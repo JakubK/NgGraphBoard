@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, filter, scan, map, Observable, Subject, combineLatest, switchMap, take, toArray, repeat, fromEvent, withLatestFrom } from "rxjs";
+import { BehaviorSubject, filter, scan, map,skip, Observable, Subject, combineLatest, switchMap, take, toArray, repeat, fromEvent, withLatestFrom, takeWhile } from "rxjs";
 import { CursorMode } from "../models/cursorMode";
 import { Edge } from "../models/edge";
 import { Node } from "../models/node";
@@ -38,11 +38,12 @@ export class BoardService {
         
         combineLatest([this.zoom$, cursorService.activeCursorMode$$]).pipe(
             switchMap(([zoom, mode]) => this.clickedPosition$$.pipe(
-                filter(() => mode === CursorMode.AddNode),
+                takeWhile(() => mode === CursorMode.AddNode),
                 map(clickedPos => ({
                     x: clickedPos.x / (zoom / 100),
                     y: clickedPos.y / (zoom / 100)
-                }))
+                })),
+                skip(1),
             )),
         ).subscribe(pos => this.addNode(pos));
 
