@@ -68,7 +68,11 @@ export class BoardService {
               filter(() => mode === CursorMode.Label),
               switchMap(edge => fromEvent(window, 'keyup').pipe(
                 map((event:any) => event.key),
-                scan((acc, curr) => acc + curr),
+                scan((acc: string, curr) => {
+                  if(curr === 'Backspace')
+                    return acc.length > 0 ? acc.substring(0, acc.length - 1) : '';
+                  return acc + curr;
+                }),
                 map((str:string) => ({
                   ...edge,
                   label: (edge.label || '') + str
