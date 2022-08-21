@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { animationFrameScheduler, filter, fromEvent, scan, map, Observable, subscribeOn, switchMap, takeUntil, pairwise, combineLatest, startWith, shareReplay, withLatestFrom } from 'rxjs';
 import { CursorMode } from 'src/app/models/cursorMode';
-import { CursorService } from 'src/app/services/cursor.service';
 import { BoardService } from '../../services/board.service';
 
 @Component({
@@ -16,7 +15,6 @@ export class BoardComponent implements OnInit {
   translationY$!: Observable<number>;
 
   constructor(public readonly boardService: BoardService,
-     private readonly cursorService: CursorService,
      private readonly host: ElementRef) {
       this.zoom$ = boardService.zoom$.pipe(
         map(zoom => zoom / 100)
@@ -34,7 +32,7 @@ export class BoardComponent implements OnInit {
     )
 
     const drag$ = mouseDown$.pipe(
-      switchMap(start => this.cursorService.activeCursorMode$$.pipe(
+      switchMap(start => this.boardService.activeCursorMode$$.pipe(
         filter(mode => mode === CursorMode.MoveCamera),
         switchMap(() => move$(start as MouseEvent)),
         subscribeOn(animationFrameScheduler),
@@ -64,7 +62,7 @@ export class BoardComponent implements OnInit {
     );
 
     fromEvent(this.host.nativeElement, 'click').pipe(
-      switchMap((event) => this.cursorService.activeCursorMode$$.pipe(
+      switchMap((event) => this.boardService.activeCursorMode$$.pipe(
         filter(mode => mode === CursorMode.AddNode),
         withLatestFrom(translation$),
         map(([_,translation]) => [...translation]),

@@ -4,7 +4,6 @@ import { CursorMode } from "../models/cursorMode";
 import { Edge } from "../models/edge";
 import { Node } from "../models/node";
 import { Position } from "../models/position";
-import { CursorService } from "./cursor.service";
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +18,10 @@ export class BoardService {
     zoom$ = new Observable<number>();
     zoomTranslation$ = new BehaviorSubject<number>(100);
 
-    constructor(cursorService: CursorService) {
+    activeCursorMode$$ = new BehaviorSubject<CursorMode>(CursorMode.Pointer);
+    clickedNodes$$ = new Subject<Node>();
+
+    constructor() {
         this.zoom$ = this.zoomTranslation$.pipe(
             scan((acc, curr) => acc + curr),
             filter(zoom => zoom <= 200 && zoom >= 100),
@@ -36,7 +38,7 @@ export class BoardService {
             ))
         ).subscribe(delta => this.zoomTranslation$.next(delta))
         
-        combineLatest([this.zoom$, cursorService.activeCursorMode$$]).pipe(
+        combineLatest([this.zoom$, this.activeCursorMode$$]).pipe(
             switchMap(([zoom, mode]) => this.clickedPosition$$.pipe(
                 takeWhile(() => mode === CursorMode.AddNode),
                 map(clickedPos => ({
@@ -47,8 +49,8 @@ export class BoardService {
             )),
         ).subscribe(pos => this.addNode(pos));
 
-        cursorService.activeCursorMode$$.pipe(
-            switchMap(mode => cursorService.clickedNodes$$.pipe(
+        this.activeCursorMode$$.pipe(
+            switchMap(mode => this.clickedNodes$$.pipe(
               filter(() => mode === CursorMode.AddEdge),
               map(node => ({...node, x: node.position.x + 24, y: node.position.y + 24})),
               take(2),
@@ -63,7 +65,7 @@ export class BoardService {
             } ]);
           });
 
-          cursorService.activeCursorMode$$.pipe(
+          this.activeCursorMode$$.pipe(
             switchMap(mode => this.clickedEdges$$.pipe(
               filter(() => mode === CursorMode.Label),
               switchMap(edge => fromEvent(window, 'keyup').pipe(
@@ -89,8 +91,8 @@ export class BoardService {
             console.log('update');
           })
 
-          cursorService.activeCursorMode$$.pipe(
-            switchMap(mode => cursorService.clickedNodes$$.pipe(
+          this.activeCursorMode$$.pipe(
+            switchMap(mode => this.clickedNodes$$.pipe(
               filter(() => mode === CursorMode.Delete),
               withLatestFrom(this.nodes$),
               map(x => ({
@@ -119,7 +121,7 @@ export class BoardService {
                 this.edges$.next(x.restEdges);
             });
 
-            cursorService.activeCursorMode$$.pipe(
+            this.activeCursorMode$$.pipe(
                 switchMap(mode => this.clickedEdges$$.pipe(
                   filter(() => mode === CursorMode.Delete),
                   withLatestFrom(this.edges$),

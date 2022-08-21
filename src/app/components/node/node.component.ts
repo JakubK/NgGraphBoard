@@ -1,23 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Node } from 'src/app/models/node';
-import { CursorService } from 'src/app/services/cursor.service';
+import { BoardService } from 'src/app/services/board.service';
 
 @Component({
   selector: '[node]',
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss']
 })
-export class NodeComponent implements OnInit {
+export class NodeComponent {
   @Input()
   data!: Node;
 
-  constructor(private readonly cursorService: CursorService) { }
-
-  ngOnInit(): void {
-  }
+  constructor(private readonly boardService: BoardService) { }
 
   nodeClick(e: MouseEvent): void {
-    this.cursorService.clickedNodes$$.next(this.data);
+    this.boardService.clickedNodes$$.next(this.data);
     e.stopPropagation();
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CursorMode } from 'src/app/models/cursorMode';
-import { CursorService } from 'src/app/services/cursor.service';
+import { BoardService } from 'src/app/services/board.service';
 
 @Component({
   selector: 'toolbar',
@@ -9,9 +9,9 @@ import { CursorService } from 'src/app/services/cursor.service';
 })
 export class ToolbarComponent {
 
-  constructor(public readonly cursorService: CursorService) { }
+  constructor(public readonly boardService: BoardService) { }
 
   switchCursor(mode: CursorMode) {
-    this.cursorService.activeCursorMode$$.next(mode);
+    this.boardService.activeCursorMode$$.next(mode);
   }
 }
