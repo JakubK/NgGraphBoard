@@ -20,9 +20,11 @@ export class EdgeComponent implements OnInit {
   }
 
   getTangent(): number {
-    const angle = Math.atan2(this.data.p1.y - this.data.p2.y, this.data.p1.x - this.data.p2.x) * 180/Math.PI + 180;
-    if(angle > 180 && angle < 360)
-      return 180 + angle;
+    let angle = (Math.atan2(this.data.p1.y - this.data.p2.y, this.data.p1.x - this.data.p2.x) * 180/Math.PI) % 360;
+    if(angle < 0)
+      angle = 360 + angle;
+    if(angle > 180 && angle < 270)
+      return Math.abs(180 - angle);
     return angle;
   }
 

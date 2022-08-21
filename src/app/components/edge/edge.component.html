@@ -16,6 +16,6 @@
     [attr.y2]="data.p2.y">
     </svg:line>
     <svg:text [attr.transform]="'rotate(' + getTangent() + ', ' + getTextPosition().x + ',' + getTextPosition().y + ')'" text-anchor="middle" class="edge__text" [attr.x]="getTextPosition().x" [attr.y]="getTextPosition().y">
-        Label
+        {{ data.label }}
     </svg:text>
 </svg:g>

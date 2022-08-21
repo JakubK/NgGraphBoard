@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, filter, scan, map,skip, Observable, Subject, combineLatest, switchMap, take, toArray, repeat, fromEvent, withLatestFrom, takeWhile } from "rxjs";
+import { BehaviorSubject, filter, scan, map, skip, Observable, Subject, combineLatest, switchMap, take, toArray, repeat, fromEvent, withLatestFrom, takeWhile } from "rxjs";
 import { CursorMode } from "../models/cursorMode";
 import { Edge } from "../models/edge";
 import { Node } from "../models/node";
@@ -62,6 +62,28 @@ export class BoardService {
                 p2: second
             } ]);
           });
+
+          cursorService.activeCursorMode$$.pipe(
+            switchMap(mode => this.clickedEdges$$.pipe(
+              filter(() => mode === CursorMode.Label),
+              switchMap(edge => fromEvent(window, 'keyup').pipe(
+                map((event:any) => event.key),
+                scan((acc, curr) => acc + curr),
+                map((str:string) => ({
+                  ...edge,
+                  label: (edge.label || '') + str
+                }))
+              ))
+            ))
+          ).subscribe(edgeWithLabel => {
+            const edges = this.edges$.getValue();
+            const remainingEdges = edges.filter(
+              x => !((x.p1.x === edgeWithLabel.p1.x && x.p1.y === edgeWithLabel.p1.y)
+              && (x.p2.x === edgeWithLabel.p2.x && x.p2.y === edgeWithLabel.p2.y))
+            );
+            this.edges$.next([...remainingEdges, edgeWithLabel]);
+            console.log('update');
+          })
 
           cursorService.activeCursorMode$$.pipe(
             switchMap(mode => cursorService.clickedNodes$$.pipe(
